@@ -12,7 +12,7 @@ async function fetchPhotos(nameQuery, page) {
     orientation: "horizontal",
     safesearch: "true",
     page: page,
-    per_page: 4
+    per_page: 40
     
   });
 
