@@ -36,7 +36,7 @@ async function onFormSubmit(event) {
   const response = await API.fetchPhotos(searchQuery, currentPage);
   currentHits = response.hits.length;
 
-  if (response.totalHits > 40) {
+  if (response.totalHits >= currentHits) {
     loadMore.classList.remove('hidden');
   } else {
     loadMore.classList.add('hidden');
