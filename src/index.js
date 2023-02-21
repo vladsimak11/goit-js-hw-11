@@ -21,11 +21,12 @@ let currentPage = 1;
 let currentHits = 0;
 let searchQuery = '';
 
-form.addEventListener('click', onFormSubmit);
+form.addEventListener('submit', onFormSubmit);
 
 async function onFormSubmit(event) {
   event.preventDefault();
 
+  currentPage = 1;
   searchQuery = event.currentTarget.elements.searchQuery.value;
 
   if (!searchQuery.trim()) {
@@ -47,6 +48,8 @@ async function onFormSubmit(event) {
       Notiflix.Notify.success(`Hooray! We found ${response.totalHits} images.`);
       gallery.innerHTML = '';
       render.addListPhotos(response.hits);
+      lightbox.refresh();
+
     }
 
     if (response.totalHits === 0) {
@@ -62,14 +65,17 @@ async function onFormSubmit(event) {
 }
 
 loadMore.addEventListener('click', onLoadMore);
+
 async function onLoadMore() {
   currentPage += 1;
   const response = await API.fetchPhotos(searchQuery, currentPage);
   render.addListPhotos(response.hits);
+  lightbox.refresh();
   currentHits += response.hits.length;
 
   if (currentHits === response.totalHits) {
-    loadMore.classList.add('is-hidden');
+    loadMore.classList.add('hidden');
+    Notiflix.Notify.info('We\'re sorry, but you\'ve reached the end of search results.');
   }
 }
 
